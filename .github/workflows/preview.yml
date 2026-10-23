@@ -45,6 +45,8 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # The action's default (3.x) can't deploy assets-only Workers.
+          wranglerVersion: '4'
           command: versions upload --preview-alias pr-${{ github.event.pull_request.number }} --message "PR ${{ github.event.pull_request.number }} @ ${{ github.event.pull_request.head.sha }}"
       - name: Comment preview URL on the PR
         env:
