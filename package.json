@@ -39,7 +39,7 @@
     "@radix-ui/react-toggle-group": "1.1.19",
     "@radix-ui/react-tooltip": "1.2.16",
     "clsx": "2.1.1",
-    "lucide-react": "1.49.0",
+    "lucide-react": "1.60.0",
     "manifold-3d": "3.5.4",
     "react": "19.3.0",
     "react-dom": "19.3.0",
