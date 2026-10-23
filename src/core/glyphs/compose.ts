@@ -294,6 +294,8 @@ interface PenState {
   gap: number;
   /** Share of the high link kept before a hiTight letter (Glyph.linkCut). */
   linkCut: number;
+  /** Extra room after a high exit, whatever follows (Glyph.exitRoom). */
+  room: number;
   /** Where the pen was before an optional rising tail (see Glyph.tailSegs). */
   beforeTail: { segs: number; exit: Point; tangent: [number, number] } | null;
 }
@@ -306,6 +308,7 @@ function penAfter(g: Glyph, body: Stroke[], ox: number, stroke: Stroke): PenStat
     detached: g.detached,
     gap: g.exitGap,
     linkCut: g.linkCut,
+    room: g.exitRoom,
     tangent: g.detached ? [1, 0] : tangentIn(stroke),
     beforeTail:
       g.tailSegs && stroke.length > g.tailSegs
@@ -418,8 +421,8 @@ class WordWriter {
     const entryTangent = kept ? tangentOut(kept) : atBody ? tangentOut(body[0]) : tangentIn(last(g.lead));
     // Spacing is measured from where the previous letter's exit would be, tail included…
     // v and w exit further left than b's long link, so the o (entered at its top-left, as
-    // after b in "bonjour") needs their extra room; other letters are spaced as before.
-    const gap = variant ? prev.gap : 0;
+    // after b in "bonjour") needs their extra room. An o adds its own room before any letter.
+    const gap = (variant ? prev.gap : 0) + (high ? prev.room : 0);
     let ox = high ? prev.exit[0] - entry[0] + g.hi + gap : prev.exit[0] + RISE_GAP;
     let pen = prev;
 
@@ -452,7 +455,7 @@ class WordWriter {
         this.open.splice(-1, 1, link);
         pen = { ...pen, exit: link[3], tangent: tangentIn([link]), linkCut: 0 };
       }
-      ox = pen.exit[0] - entry[0] + g.hi;
+      ox = pen.exit[0] - entry[0] + g.hi + prev.room;
       ox += apartShift(entry, ox, kept ? [kept, ...body] : body, this.strokes);
     }
     // Only letters entered low can be cut through this way; letters entered at the top keep

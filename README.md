@@ -65,7 +65,7 @@ A 3D preview you can drag to rotate. It shows what will be exported.
 | Pin & socket | Exact original: the dot prints beside the word with a peg, and the stem gets a socket to glue it into. |
 | Floating     | Exactly as designed; the dot prints as a loose piece.                                                  |
 
-The panel estimates the finished size and warns about things like thin tubes, descenders trimmed by flat feet, and tip-over risk. After export it shows the real size, the number of feet and the volume.
+The panel estimates the finished size and warns about things like thin tubes, letters hanging above descender loops, and tip-over risk. After export it shows the real size, the number of feet and the volume.
 
 **Printing tips:** standing pieces need supports under the loops (tree supports work well). Use 3MF if your slicer supports it, since it keeps units and topology. For short words, 120 mm or wider with Thickness ≥ 1.3× gives a sturdy piece.
 

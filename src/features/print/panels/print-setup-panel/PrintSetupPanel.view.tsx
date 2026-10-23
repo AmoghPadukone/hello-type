@@ -90,7 +90,7 @@ export function PrintSetupPanel({ settings, color, onChange, onColor }: PrintSet
           </Field>
           <Switch
             label="Add base plate"
-            hint="Words with g j p q y f need a base plate: flat feet would trim their loops."
+            hint="Words with g j p q y f stand on their loops; a base plate keeps them steady."
             description="A slim slab under the word that joins every letter."
             checked={settings.base === 'plate'}
             onChange={on => onChange({ base: on ? 'plate' : 'feet' })}

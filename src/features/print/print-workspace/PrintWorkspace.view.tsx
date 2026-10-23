@@ -21,7 +21,7 @@ export function PrintWorkspaceView({
 }: PrintWorkspaceViewProps) {
   return (
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px]">
-      <div className="lg:min-h-[540px]">
+      <div className="lg:sticky lg:top-6 lg:h-[540px] lg:self-start">
         <Preview3D
           plan={previewPlan}
           color={settings.color}

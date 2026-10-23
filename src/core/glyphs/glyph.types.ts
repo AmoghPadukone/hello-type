@@ -44,6 +44,8 @@ export interface Glyph {
   hiTight: boolean;
   /** Share of this letter's high link kept before a hiTight letter (0 = keep it all). */
   linkCut: number;
+  /** Extra room after this letter's high exit before any letter (o's link otherwise crowds "og"). */
+  exitRoom: number;
 }
 
 /** Shape of glyph-data.json. `flick` is the word-final stroke added after a low exit. */

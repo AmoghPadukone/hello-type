@@ -93,9 +93,9 @@ export function printPlan(
   };
 
   if (set.orientation === 'stand') {
-    // Letters stand on the baseline feet. A plate sits right there too, so every word stands
-    // on it; descender loops sink into it and are trimmed flush with its underside.
-    const feetY = m.footY + set.feetMM / s;
+    // Letters stand on the baseline feet, or with descenders, on the descender loops so they
+    // stay whole and the other letters hang above. A plate sits right there too.
+    const feetY = (m.hasDescenders ? m.lowY : m.footY) + set.feetMM / s;
     plan.cut = { axis: 1, at: feetY };
     if (set.base === 'plate') {
       const midZ = (m.minZ + m.maxZ) / 2;
@@ -104,7 +104,7 @@ export function printPlan(
       const pl = { thickness: set.plateMM, margin: set.plateMarginMM, round: set.plateMM * 0.35 };
       const d = Math.max(m.maxZ - m.minZ + (2 * pl.margin) / s, PLATE_MM.minDepthRatio * (m.maxY - feetY));
       // Feet are not all equally low; the plate must reach the highest one so no letter floats.
-      const top = Math.max(feetY, m.footTopY) + PLATE_MM.overlap / s;
+      const top = (m.hasDescenders ? feetY : Math.max(feetY, m.footTopY)) + PLATE_MM.overlap / s;
       const bottom = top - pl.thickness / s;
       plan.cut = { axis: 1, at: bottom };
       plan.plate = {

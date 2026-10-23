@@ -52,10 +52,11 @@ A `Stroke` is a list of cubic Bézier segments over these 4D points. The 2D SVG 
 6. **Standing pieces.**
    - `footY` is the lowest pen _local minimum_ above the descender zone (y > −60). Strokes that only pass through the baseline on their way down don't count as feet.
    - Without a plate, the cut is at `footY + feetMM / s` on the y axis, so every letter touching the desk gets a flat foot.
-   - With a plate, the slab's top sits 0.4 mm above the feet cut line or the highest foot, whichever is higher, so no letter floats. The cut moves to the slab's underside, so descenders sink into the plate and every word joins it. Plate thickness, margin and corner radius are in millimetres, independent of the text width.
+   - With descenders (g j p q y f), the word stands on its descender loops instead: the cut is at `lowY + feetMM / s`, so the loops stay whole and the other letters hang above.
+   - With a plate, the slab's top sits 0.4 mm above the cut line (or, without descenders, the highest foot, if higher) so no letter floats. The cut moves to the slab's underside and every word joins it. Plate thickness, margin and corner radius are in millimetres, independent of the text width.
 7. **Lying flat.** `flatBack` cuts on the z axis at `minZ + flatBack × 30 × radiusScale`, so the back prints without supports.
 
-`estimate` (`core/print/estimate.ts`) turns a plan into an approximate size and a list of warnings (thin tube, trimmed descenders, tip-over risk, loose dots) without building a mesh.
+`estimate` (`core/print/estimate.ts`) turns a plan into an approximate size and a list of warnings (thin tube, letters hanging above descenders, tip-over risk, loose dots) without building a mesh.
 
 ## 3. Sweeping a tube
 

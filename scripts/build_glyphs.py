@@ -205,6 +205,9 @@ class Glyph:
     # Share of the high link kept before a hi_tight letter (b's link is drawn to reach into a
     # following bowl, as in "merhaba" and "bonjour", which leaves a long bare line before r s).
     link_cut: float
+    # Extra room after this letter's high exit, whatever follows (o's link would otherwise set the
+    # next letter close against its bowl, as in "og").
+    exit_room: float
 
     def to_json(self) -> dict:
         return {camel_case(k): v for k, v in asdict(self).items()}
@@ -219,7 +222,7 @@ def glyph(lead: list[Stroke], body: list[Stroke], *, join: bool, exit: Point | N
           exit_type: str = 'low', marks: Sequence[Stroke] = (), tail: bool = False, detached: bool = False,
           initial: list[Stroke] | None = None, hi: float = 0, tail_segs: int = 0, hi_lead: float = 0,
           hi_body: list[Stroke] | None = None, exit_gap: float = 0, hi_tight: bool = False,
-          link_cut: float = 0) -> Glyph:
+          link_cut: float = 0, exit_room: float = 0) -> Glyph:
     """A Glyph, shifted so the lead starts at x = 0. The exit defaults to the end of the body."""
     if join:  # lead and body come from different source strokes: close any rounding gap
         body = [snap(lead[-1], body[0])] + list(body[1:])
@@ -234,6 +237,7 @@ def glyph(lead: list[Stroke], body: list[Stroke], *, join: bool, exit: Point | N
         exit=[exit[0] - entry_x, *exit[1:]], exit_type=exit_type, detached=detached,
         initial=shift(initial) if initial else None, hi=hi, tail_segs=tail_segs, hi_lead=hi_lead,
         hi_body=shift(hi_body) if hi_body else None, exit_gap=exit_gap, hi_tight=hi_tight, link_cut=link_cut,
+        exit_room=exit_room,
     )
 
 
@@ -270,6 +274,13 @@ FLICK = ref('tr', 9, 3)
 
 def rise_to(point: Point) -> Stroke:
     return ending_at(RISE_TOP, point)
+
+
+def widened(segs: Stroke, dx: float) -> Stroke:
+    """segs stretched in x about their start so their end moves dx further right."""
+    x0, x1 = start(segs)[0], end(segs)[0]
+    k = (x1 - x0 + dx) / (x1 - x0)
+    return [[[x0 + (x - x0) * k, *rest] for x, *rest in seg] for seg in segs]
 
 
 def lead_in_to(point: Point) -> Stroke:
@@ -424,9 +435,13 @@ G['k'] = glyph([LOOP_LEAD], [LOOP_STEM, stem_foot(LOOP_STEM, k_arch + snap(k_arc
 # l — "hello".
 G['l'] = glyph([L_LEAD], [ref('en', 1, 10, 14)], join=True, hi=200)
 
-# m — "merhaba": three separate strokes; the opening hook is used word-initially.
+# m — "merhaba": three separate strokes; the opening hook is used word-initially. Its rise is
+# stretched so the m sits further from the letter before it than n does (its three humps read as
+# crowded otherwise, as in "am").
+M_ROOM = 60
 m_body = [ref('tr', 0, 1, 2), ref('tr', 1, 0, 2), ref('tr', 2, 0, 3)]
-G['m'] = glyph([rise_to(start(m_body[0]))], m_body, join=False, initial=[ref('tr', 0, 0)])
+m_rise = widened(RISE_TOP, M_ROOM)
+G['m'] = glyph([ending_at(m_rise, start(m_body[0]))], m_body, join=False, initial=[ref('tr', 0, 0)])
 
 # n — "dan".
 n_stem = ref('hr', 11, 0)
@@ -434,7 +449,7 @@ G['n'] = glyph([RISE_TOP], [n_stem, N_HUMP], join=False)
 
 # o — "hello". After a high exit (b o v w) the o is Apple's o from "bonjour" (entered at its
 # top-left, as Apple joins b → o), aligned so its bowl sits where hello's o bowl does.
-G['o'] = glyph([ref('en', 1, 21)], [ref('en', 1, 22, 28)], join=True, exit_type='high', hi=0, tail_segs=1,
+G['o'] = glyph([ref('en', 1, 21)], [ref('en', 1, 22, 28)], join=True, exit_type='high', hi=0, tail_segs=1, exit_room=50,
                hi_body=[move(ref('fr', 1, 1, 7), 2052 - 788)])
 
 # p — stem through the descender, then n's hump.

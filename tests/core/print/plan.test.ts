@@ -8,7 +8,7 @@ import { DEFAULT_PRINT, normalizePrint, PRINT_LIMITS } from '@/core/print/settin
 
 const planFor = (text: string, print = {}) => {
   const c = compose(text);
-  return printPlan(c.strokes, c.kinds, 60, { ...DEFAULT_PRINT, ...print });
+  return printPlan(c.strokes, c.kinds, 60, { ...DEFAULT_PRINT, orientation: 'stand', ...print });
 };
 
 describe('normalizePrint', () => {
@@ -22,7 +22,7 @@ describe('normalizePrint', () => {
     expect(s.widthMM).toBe(PRINT_LIMITS.widthMM.min);
     expect(s.thickness).toBe(DEFAULT_PRINT.thickness);
     expect(s.feetMM).toBe(PRINT_LIMITS.feetMM.min);
-    expect(s.orientation).toBe('stand');
+    expect(s.orientation).toBe('flat');
   });
 });
 
@@ -44,11 +44,19 @@ describe('printPlan', () => {
   });
 
   it('puts the plate at the baseline so every word stands on it', () => {
-    const plan = planFor('hi jo', { base: 'plate' })!;
-    expect(plan.metrics.hasDescenders).toBe(true);
+    const plan = planFor('hello', { base: 'plate' })!;
     // Plate top is just above the baseline feet; the cut removes only what's below the plate.
     expect(plan.plate!.max[1]).toBeGreaterThan(plan.metrics.footY);
     expect(plan.cut!.at).toBeCloseTo(plan.plate!.min[1], 6);
+  });
+
+  it('stands words with descenders on their loops, kept whole', () => {
+    const { metrics: m, cut, s } = planFor('amogh')!;
+    expect(m.hasDescenders).toBe(true);
+    expect((cut!.at - m.lowY) * s).toBeCloseTo(DEFAULT_PRINT.feetMM, 6);
+    const plated = planFor('amogh', { base: 'plate' })!;
+    expect(plated.plate!.max[1]).toBeLessThan(m.footY);
+    expect(plated.plate!.max[1]).toBeLessThan(m.lowY + 2.5 / plated.s);
   });
 
   it('sizes the plate in mm, independent of the text width', () => {
@@ -94,9 +102,8 @@ describe('printPlan', () => {
     expect(estimate(planFor('hi', { dots: 'floating' })!).warnings.join(' ')).toMatch(/loose/);
   });
 
-  it('warns about trimmed descenders on flat feet', () => {
-    expect(estimate(planFor('jumping')!).warnings.join(' ')).toMatch(/trimmed/);
-    expect(estimate(planFor('jumping', { base: 'plate' })!).warnings.join(' ')).toMatch(/sink into/);
+  it('warns that letters hang above descender loops', () => {
+    expect(estimate(planFor('jumping')!).warnings.join(' ')).toMatch(/hang above/);
     expect(estimate(planFor('hello')!).warnings).toEqual([]);
   });
 });

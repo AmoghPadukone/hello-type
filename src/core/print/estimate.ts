@@ -15,9 +15,7 @@ export function estimate(plan: PrintPlan): PrintEstimate {
   if (tubeMM < 1.6) warnings.push('The tube is thin for FDM printing — make it wider or thicker.');
   if (plan.orientation === 'stand' && m.hasDescenders)
     warnings.push(
-      plan.plate
-        ? 'Descender loops (g j p q y f) sink into the base plate.'
-        : 'Descender loops (g j p q y f) are trimmed at the feet, which can split letters apart — use a base plate.',
+      'The word stands on its descender loops (g j p q y f); the other letters hang above — use tree supports under them.',
     );
   // A standing piece needs its footprint depth to be a fair share of its height.
   if (plan.orientation === 'stand' && !plan.plate && depthMM / heightMM < 0.15)
