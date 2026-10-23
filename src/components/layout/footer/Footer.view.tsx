@@ -1,4 +1,5 @@
-import { AUTHOR, BRAND } from '@/config/brand';
+import { ArrowUpRight, Star } from 'lucide-react';
+import { AUTHOR, BRAND, REPO_URL } from '@/config/brand';
 
 function GitHubMark() {
   return (
@@ -38,15 +39,30 @@ export function Footer() {
             </span>
           </a>
         </p>
-        <a
-          href={AUTHOR.github}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-full bg-white/[0.05] px-3 py-1.5 text-xs font-medium text-fg-muted ring-1 ring-white/[0.08] transition hover:text-fg"
-        >
-          <GitHubMark />
-          {AUTHOR.github.replace(/^https:\/\//, '')}
-        </a>
+        <div className="inline-flex items-stretch overflow-hidden rounded-full bg-white/[0.05] text-xs font-medium text-fg-muted ring-1 ring-white/[0.08]">
+          <a
+            href={REPO_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 py-1.5 pr-3 pl-3 transition hover:bg-white/[0.06] hover:text-fg focus-visible:text-fg"
+          >
+            <GitHubMark />
+            hello-font
+            <span className="flex items-center gap-0.5 text-fg-subtle">
+              <Star className="size-3" aria-hidden />
+              Star
+            </span>
+          </a>
+          <a
+            href={AUTHOR.github}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1 border-l border-white/[0.08] py-1.5 pr-3 pl-3 transition hover:bg-white/[0.06] hover:text-fg focus-visible:text-fg"
+          >
+            @{AUTHOR.github.split('/').pop()}
+            <ArrowUpRight className="size-3" aria-hidden />
+          </a>
+        </div>
       </div>
       <p className="mt-6 border-t border-white/[0.06] pt-5 text-xs leading-relaxed text-fg-subtle text-pretty sm:border-t-0 sm:pt-0">
         In tribute to Susan Kare’s 1984 Macintosh “hello”. Stroke data from{' '}

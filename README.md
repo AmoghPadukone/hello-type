@@ -1,17 +1,23 @@
 # Hellotype
 
-**Your words, in the script that said hello.** Type anything and watch it write itself in the cursive “hello” that Susan Kare drew for the original Macintosh in 1984. Then download a crisp SVG or a print-ready 3D model for your desk.
+Type a word and see it written in the cursive "hello" script from the original Macintosh. You can save the result as an SVG or PNG, or export it as a 3D model to print.
 
-- ✍️ **Any lowercase word.** A full a–z cursive alphabet: 18 letters are cut from Apple's own pen strokes, and the rest are assembled from those strokes in the same style.
-- 🎞️ **Draw-on animation** that matches Apple's pacing, in the app and in a self-animating SVG export.
-- 🧊 **A real 3D tube, not an extruded outline.** A round tube is swept along the pen path using Apple's own depth data, so loops pass in front of and behind each other the way they do in the macOS 3D "hello".
-- 🖨️ **Print-ready export.** A single watertight solid as 3MF or STL, sized in millimetres. It can stand upright on flat feet or a base plate, or lie flat.
+**Live demo: https://amoghpadukone.github.io/hello-font/#graphic**
 
-> The original “hello” was drawn by **Susan Kare** for the Macintosh (1984). The lettering and stroke data are © Apple Inc. This project is a tribute and is not affiliated with or endorsed by Apple. See [Credits](#credits).
+It's a small side project. I wanted to see if Apple's "hello" strokes could be turned into a full alphabet and then into something I could hold on my desk.
+
+What it does:
+
+- Writes any lowercase text in the script. 18 letters come straight from Apple's pen strokes; I built the rest from pieces of those.
+- Animates the word being drawn, in the app and in an animated SVG export.
+- Builds 3D text as a round tube that follows the pen path, using Apple's depth data so loops pass in front of and behind each other.
+- Exports a single watertight 3MF or STL in millimetres. It can stand upright, sit on a base plate, or lie flat.
+
+The original "hello" was drawn by Susan Kare for the Macintosh in 1984. The lettering and stroke data are © Apple Inc. This is a fan project and isn't affiliated with or endorsed by Apple. See [Credits](#credits).
 
 ## Quick start
 
-Requires Node.js 20.19+ (or 22.12+).
+You need Node.js 20.19+ (or 22.12+).
 
 ```bash
 npm install
@@ -25,15 +31,15 @@ npm run preview    # serve the production build
 
 ## Using it
 
-Type in the text bar, or tap an example. Lowercase a–z and spaces are supported; anything else is skipped and listed under the bar. Then pick what you're making. The choice is remembered and kept in the URL (`#graphic` / `#print`), so you can link straight to either workspace.
+Type in the text bar or pick an example. Lowercase a–z and spaces work; anything else is skipped and listed under the bar. Then choose Graphic or 3D print. Your choice is saved and kept in the URL (`#graphic` / `#print`), so you can link straight to either one.
 
 ### Graphic (SVG · PNG)
 
-A large 2D preview with **Appearance** (colour, stroke weight, drawing speed) and **Download**: SVG, an animated SVG that draws itself when opened in a browser, or a transparent PNG.
+A 2D preview with **Appearance** (colour, stroke weight, drawing speed) and **Download**: SVG, an animated SVG that draws itself in the browser, or a transparent PNG.
 
 ### 3D print (3MF · STL)
 
-A large 3D preview (drag to rotate) that shows exactly what will be exported.
+A 3D preview you can drag to rotate. It shows what will be exported.
 
 | Setting         | What it does                                                                                                                             |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
@@ -44,7 +50,7 @@ A large 3D preview (drag to rotate) that shows exactly what will be exported.
 | Depth           | How far loops swing in front of and behind each other. 100% is Apple's; lower values fuse crossings into a stronger, more compact piece. |
 | Dots on i and j | Appears when your text has an i or j. Pick how Apple's floating dots print (see below).                                                  |
 
-**Dot styles.** Apple's i/j dots float above their stems, so on their own they'd print as loose pieces.
+**Dot styles.** Apple's i and j dots float above their stems, so on their own they'd print as loose pieces.
 
 | Style        | Result                                                                                                 |
 | ------------ | ------------------------------------------------------------------------------------------------------ |
@@ -59,9 +65,9 @@ A large 3D preview (drag to rotate) that shows exactly what will be exported.
 | Pin & socket | Exact original: the dot prints beside the word with a peg, and the stem gets a socket to glue it into. |
 | Floating     | Exactly as designed; the dot prints as a loose piece.                                                  |
 
-The panel estimates the finished size and warns about problems: thin tubes, descenders trimmed by flat feet, tip-over risk. Once the export finishes, it shows the real size, how many feet the model stands on, and the volume.
+The panel estimates the finished size and warns about things like thin tubes, descenders trimmed by flat feet, and tip-over risk. After export it shows the real size, the number of feet and the volume.
 
-**Printing tips:** standing pieces print upright and need supports under the loops (tree supports work well). Use 3MF if your slicer supports it: it keeps units and topology. For short words, 120 mm or wider and Thickness ≥ 1.3× gives a sturdy piece.
+**Printing tips:** standing pieces need supports under the loops (tree supports work well). Use 3MF if your slicer supports it, since it keeps units and topology. For short words, 120 mm or wider with Thickness ≥ 1.3× gives a sturdy piece.
 
 ## How it works
 
@@ -79,7 +85,7 @@ data/source/*.json ──scripts/build_glyphs.py──▶ src/core/glyphs/glyph-
 - **Composition** (`src/core/glyphs/compose.ts`). Letters join at the baseline. After a high exit (o b v w) or a descender's rising exit, a smooth connector is generated in place of the next letter's lead-in. Every join is then welded exactly, because in 3D every tube end shows.
 - **3D** (`src/core/print/`). A round tube is swept along each stroke with rotation-minimising frames, so it never twists. For printing, tubes are cut into pieces that can't overlap themselves, then merged with [manifold-3d](https://github.com/elalish/manifold) into one watertight solid in a Web Worker.
 
-The full technical write-up is in [`docs/`](docs/):
+More detail is in [`docs/`](docs/):
 
 | Doc                                                      | Covers                                                    |
 | -------------------------------------------------------- | --------------------------------------------------------- |
@@ -88,7 +94,7 @@ The full technical write-up is in [`docs/`](docs/):
 | [Glyphs and composition](docs/glyphs-and-composition.md) | The glyph build, how letters join, weld, quality checks   |
 | [Development](docs/development.md)                       | Commands, tests, recipes, conventions                     |
 
-AI agents: start with [AGENTS.md](AGENTS.md).
+If you're using an AI coding agent, point it at [AGENTS.md](AGENTS.md).
 
 ## Development
 
@@ -117,16 +123,16 @@ AI agents: start with [AGENTS.md](AGENTS.md).
 └── tests/              Vitest suites (mirror src/core)
 ```
 
-Every source folder has a short `README.md`. Contributions are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
+Each source folder has a short `README.md`. Contributions are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Deploying
 
-`npm run build` outputs a static site with relative asset paths. The included GitHub Actions workflow (`.github/workflows/deploy.yml`) publishes it to GitHub Pages on every push to `main`. To turn it on, open **Settings → Pages** and set **Source** to **GitHub Actions**.
+`npm run build` outputs a static site with relative asset paths. The GitHub Actions workflow in `.github/workflows/deploy.yml` publishes it to GitHub Pages on every push to `main`. To enable it, go to **Settings → Pages** and set **Source** to **GitHub Actions**.
 
 ## Credits
 
-- Made by **[Amogh Padukone](https://github.com/AmoghPadukone)**.
-- **Susan Kare** drew the original cursive “hello” for the Macintosh in 1984. Hellotype exists because of that lettering.
+- Made by [Amogh Padukone](https://github.com/AmoghPadukone). Source: [AmoghPadukone/hello-font](https://github.com/AmoghPadukone/hello-font).
+- **Susan Kare** drew the original cursive “hello” for the Macintosh in 1984. This project wouldn't exist without that lettering.
 - Stroke data: [JaceThings/SF-Hello](https://github.com/JaceThings/SF-Hello) by Gigi ([@g-cqd](https://github.com/g-cqd)) and Jace ([@JaceThings](https://github.com/JaceThings)). The JSON files are © 2020 Apple Inc. They're included here, as in SF-Hello, for non-commercial, fan and educational use.
 - CSG: [manifold-3d](https://github.com/elalish/manifold). Rendering: [three.js](https://threejs.org). UI: [React](https://react.dev), [Radix UI](https://www.radix-ui.com), [Tailwind CSS](https://tailwindcss.com) and [Lucide](https://lucide.dev).
 

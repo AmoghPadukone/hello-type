@@ -6,6 +6,8 @@ export const BRAND = {
     'Type anything and watch it write itself — then download a crisp SVG or a print-ready 3D model.',
 } as const;
 
+export const REPO_URL = 'https://github.com/AmoghPadukone/hello-font';
+
 export const CREDITS = [
   {
     who: 'Susan Kare',
@@ -16,6 +18,11 @@ export const CREDITS = [
     who: 'SF-Hello',
     what: 'Gigi (@g-cqd) and Jace (@JaceThings) extracted the stroke data used here.',
     href: 'https://github.com/JaceThings/SF-Hello',
+  },
+  {
+    who: 'Source code',
+    what: 'Hellotype is open source. Browse the code, report a bug or send a pull request.',
+    href: REPO_URL,
   },
   {
     who: 'Apple',
