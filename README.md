@@ -129,7 +129,7 @@ Each source folder has a short `README.md`. Contributions are welcome; see [CONT
 
 `npm run build` outputs a static site with relative asset paths, so it works from any host or sub-path.
 
-- **Pull requests** run `.github/workflows/ci.yml` (typecheck, lint, format, tests, glyph-data check, build). Same-repo PRs also get a Cloudflare Workers preview URL posted as a comment.
+- **Pull requests** run `.github/workflows/preview.yml`, which calls `ci.yml` (typecheck, lint, format, tests, glyph-data check, build). Same-repo PRs also get a Cloudflare Workers preview URL posted as a comment.
 - **Pushes to `main`** run `.github/workflows/deploy.yml`: the same CI, then the tested build is published to Cloudflare Workers (production).
 
 One-time setup is in [docs/deployment.md](docs/deployment.md).

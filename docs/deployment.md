@@ -3,7 +3,7 @@
 Hellotype is a static site (`dist/`), hosted on **Cloudflare Workers** and deployed from GitHub Actions.
 
 ```
-PR opened/updated ─▶ ci.yml: quality ┐
+PR opened/updated ─▶ preview.yml ─▶ ci.yml: quality ┐
                                test   ├─▶ preview (Cloudflare preview URL, commented on the PR)
                                glyphs │
                                build ─┘  (uploads `dist` artifact)

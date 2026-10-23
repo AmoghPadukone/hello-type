@@ -1,0 +1,57 @@
+name: Preview
+
+# Every PR: run CI, then publish a preview URL and comment it on the PR.
+on:
+  pull_request:
+
+# A new push to the same PR cancels the older run.
+concurrency:
+  group: preview-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # Preview URLs look like https://pr-<n>-hello-type.<subdomain>.workers.dev
+  WORKERS_SUBDOMAIN: ${{ vars.WORKERS_SUBDOMAIN || 'amoghpadukone' }}
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  # Preview URL for each PR. Skipped for forks (they have no access to secrets).
+  preview:
+    name: Deploy preview
+    needs: ci
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+    environment:
+      name: preview
+      url: https://pr-${{ github.event.pull_request.number }}-hello-type.${{ env.WORKERS_SUBDOMAIN }}.workers.dev
+    steps:
+      # wrangler.jsonc (name, assets directory) is needed alongside dist.
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: versions upload --preview-alias pr-${{ github.event.pull_request.number }} --message "PR ${{ github.event.pull_request.number }} @ ${{ github.event.pull_request.head.sha }}"
+      - name: Comment preview URL on the PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          URL: https://pr-${{ github.event.pull_request.number }}-hello-type.${{ env.WORKERS_SUBDOMAIN }}.workers.dev
+          SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --repo "$GITHUB_REPOSITORY" \
+            --edit-last --create-if-none \
+            --body "🚀 **Preview:** $URL  (commit \`${SHA::7}\`)"
