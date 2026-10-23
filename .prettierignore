@@ -1,0 +1,5 @@
+dist
+node_modules
+src/core/glyphs/glyph-data.json
+data/source
+package-lock.json
