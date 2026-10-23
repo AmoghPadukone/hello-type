@@ -127,7 +127,12 @@ Each source folder has a short `README.md`. Contributions are welcome; see [CONT
 
 ## Deploying
 
-`npm run build` outputs a static site with relative asset paths. The GitHub Actions workflow in `.github/workflows/deploy.yml` publishes it to GitHub Pages on every push to `main`. To enable it, go to **Settings → Pages** and set **Source** to **GitHub Actions**.
+`npm run build` outputs a static site with relative asset paths, so it works from any host or sub-path.
+
+- **Pull requests** run `.github/workflows/ci.yml` (typecheck, lint, format, tests, glyph-data check, build). Same-repo PRs also get a Cloudflare Workers preview URL posted as a comment.
+- **Pushes to `main`** run `.github/workflows/deploy.yml`: the same CI, then the tested build is published to Cloudflare Workers (production).
+
+One-time setup is in [docs/deployment.md](docs/deployment.md).
 
 ## Credits
 

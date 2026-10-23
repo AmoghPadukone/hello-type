@@ -1,0 +1,8 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hello-type",
+  "compatibility_date": "2026-10-24",
+  // Static site: Cloudflare serves ./dist directly (headers come from dist/_headers).
+  "assets": { "directory": "./dist" },
+  "observability": { "enabled": true },
+}

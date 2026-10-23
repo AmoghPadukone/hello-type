@@ -1,40 +1,45 @@
-name: Deploy to GitHub Pages
+name: Deploy
 
+# Production deploy: every push to main runs the full CI, then ships that build
+# to Cloudflare Workers (static assets). Can also be re-run by hand from the Actions tab.
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
+# Never run two production deploys at once, and never cancel one halfway.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci
-      - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
+  ci:
+    uses: ./.github/workflows/ci.yml
 
   deploy:
-    needs: build
+    name: Deploy to production
+    needs: ci
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      deployments: write
+    # Add required reviewers or branch rules to this environment in repo
+    # Settings → Environments if you want a manual approval gate.
     environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      name: production
+      url: https://hello-type.${{ vars.WORKERS_SUBDOMAIN || 'amoghpadukone' }}.workers.dev
     steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy

@@ -1,18 +1,167 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr" prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Primary -->
+    <title>Hellotype — Write anything in the Macintosh “hello” script</title>
     <meta
       name="description"
-      content="Type anything and watch it write itself in the iconic Macintosh “hello” script — then download an SVG or a print-ready 3D model."
+      content="Type anything and watch it write itself in the iconic Macintosh “hello” cursive. Download a crisp SVG, a self-drawing animation, a PNG, or a watertight 3D-printable 3MF/STL. Free, open source, runs in your browser."
     />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <title>Hellotype — your words in the “hello” script</title>
+    <meta
+      name="keywords"
+      content="hello font, macintosh hello script, apple hello, cursive text generator, handwriting generator, script font, svg generator, animated svg, 3d print text, 3mf, stl, text to 3d model, susan kare, sf-hello, free, open source"
+    />
+    <meta name="author" content="Amogh Padukone" />
+    <meta name="creator" content="Amogh Padukone" />
+    <meta name="publisher" content="Amogh Padukone" />
+    <meta name="application-name" content="Hellotype" />
+    <meta name="generator" content="Vite, React" />
+    <meta name="category" content="design tools" />
+    <meta name="rating" content="general" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="canonical" href="__SITE_URL__/" />
+    <link rel="author" href="__SITE_URL__/humans.txt" />
+    <link rel="me" href="https://github.com/AmoghPadukone" />
+    <link rel="me" href="https://www.linkedin.com/in/amogh-padukone/" />
+    <link rel="alternate" hreflang="en" href="__SITE_URL__/" />
+    <link rel="alternate" hreflang="x-default" href="__SITE_URL__/" />
+    <link rel="sitemap" type="application/xml" href="__SITE_URL__/sitemap.xml" />
+
+    <!-- Crawlers -->
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="bingbot" content="index, follow" />
+
+    <!-- Open Graph (Facebook, LinkedIn, WhatsApp, Slack, Discord, iMessage, Telegram) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Hellotype" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="__SITE_URL__/" />
+    <meta property="og:title" content="Hellotype — Your words, in the script that said hello" />
+    <meta
+      property="og:description"
+      content="Type anything and watch it write itself in the Macintosh “hello” cursive. Export SVG, PNG, or a print-ready 3D model. Free and open source."
+    />
+    <meta property="og:image" content="__SITE_URL__/og-image.png" />
+    <meta property="og:image:secure_url" content="__SITE_URL__/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="The word “hello” written in flowing white Macintosh cursive on a black background, with the Hellotype name and tagline."
+    />
+
+    <!-- X / Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="__SITE_URL__/" />
+    <meta name="twitter:title" content="Hellotype — Your words, in the script that said hello" />
+    <meta
+      name="twitter:description"
+      content="Type anything and watch it write itself in the Macintosh “hello” cursive. Export SVG, PNG, or a print-ready 3D model."
+    />
+    <meta name="twitter:image" content="__SITE_URL__/og-image.png" />
+    <meta
+      name="twitter:image:alt"
+      content="The word “hello” written in flowing white Macintosh cursive on a black background."
+    />
+
+    <!-- Appearance: browser chrome, iOS / Android install, Windows tiles -->
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="msapplication-TileColor" content="#000000" />
+    <meta name="msapplication-TileImage" content="__SITE_URL__/icon-192.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Hellotype" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- Icons -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Structured data (Google rich results) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "__SITE_URL__/#website",
+            "url": "__SITE_URL__/",
+            "name": "Hellotype",
+            "description": "Write anything in the Macintosh “hello” script and export it as SVG, PNG or a 3D-printable model.",
+            "inLanguage": "en",
+            "publisher": { "@id": "__SITE_URL__/#author" }
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "__SITE_URL__/#app",
+            "name": "Hellotype",
+            "url": "__SITE_URL__/",
+            "description": "Type anything and watch it write itself in the iconic Macintosh “hello” cursive. Download a crisp SVG, a self-drawing animated SVG, a PNG, or a watertight 3MF/STL for 3D printing.",
+            "applicationCategory": "DesignApplication",
+            "applicationSubCategory": "Text and lettering generator",
+            "operatingSystem": "Any (web browser)",
+            "browserRequirements": "Requires a modern browser with WebAssembly and WebGL",
+            "image": "__SITE_URL__/og-image.png",
+            "screenshot": "__SITE_URL__/og-image.png",
+            "isAccessibleForFree": true,
+            "license": "https://opensource.org/licenses/MIT",
+            "codeRepository": "https://github.com/AmoghPadukone/hello-font",
+            "inLanguage": "en",
+            "keywords": "cursive, handwriting, hello script, svg, 3d printing, 3mf, stl",
+            "featureList": [
+              "Live preview of any lowercase text in the Macintosh hello script",
+              "Export crisp vector SVG",
+              "Export a self-drawing animated SVG",
+              "Export transparent PNG",
+              "Export watertight 3MF and STL for 3D printing",
+              "Runs entirely in the browser, no uploads"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "author": { "@id": "__SITE_URL__/#author" },
+            "isPartOf": { "@id": "__SITE_URL__/#website" }
+          },
+          {
+            "@type": "Person",
+            "@id": "__SITE_URL__/#author",
+            "name": "Amogh Padukone",
+            "url": "https://github.com/AmoghPadukone",
+            "sameAs": ["https://github.com/AmoghPadukone", "https://www.linkedin.com/in/amogh-padukone/"]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <main
+        style="
+          font-family: system-ui, sans-serif;
+          color: #f5f5f7;
+          background: #000;
+          padding: 4rem 1.5rem;
+          text-align: center;
+        "
+      >
+        <h1>Hellotype</h1>
+        <p>Write anything in the Macintosh “hello” script, then export SVG, PNG, or a 3D-printable model.</p>
+        <p>This app needs JavaScript. Please enable it and reload.</p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

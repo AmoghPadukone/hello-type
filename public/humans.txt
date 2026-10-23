@@ -1,0 +1,10 @@
+/* TEAM */
+Author: Amogh Padukone
+GitHub: https://github.com/AmoghPadukone
+LinkedIn: https://www.linkedin.com/in/amogh-padukone/
+
+/* SITE */
+Name: Hellotype
+Stack: Vite, React, TypeScript, Tailwind CSS, three.js, manifold-3d
+Source: https://github.com/AmoghPadukone/hello-font
+Credits: Susan Kare (original lettering), SF-Hello (stroke data)
